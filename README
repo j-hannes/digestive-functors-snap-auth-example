@@ -1,0 +1,4 @@
+An example that shows how digestive functors can work together with the
+Snap.Snaplet.Auth library.
+
+This does not quite work yet, but the goal is to make it work. :)
