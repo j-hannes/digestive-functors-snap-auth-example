@@ -22,6 +22,8 @@
         <dfLabel class="control-label" ref="email">Email</dfLabel>
         <dfInputText ref="email" />
 
+        <br />
+
         <dfInputSubmit class="btn btn-primary" value="Send" />
 
       </dfForm>
