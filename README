@@ -2,3 +2,10 @@ An example that shows how digestive functors can work together with the
 Snap.Snaplet.Auth library.
 
 This does not quite work yet, but the goal is to make it work. :)
+
+There are still some things to improve:
+  - the little library Util/Form.hs is not a standalone library, but depends
+    on the Application, there might be a better place for the showForm
+    function
+  - the authentication backend "users.json" is hardcoded in two different
+    locations, this breaks the DRY principle
