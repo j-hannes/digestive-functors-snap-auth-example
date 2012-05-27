@@ -1,11 +1,36 @@
-An example that shows how digestive functors can work together with the
-Snap.Snaplet.Auth library.
+A web application based on the Snap framework to demonstrate basic
+authentication functionality. This simple example shows how the
+Snap.Snaplet.Auth library can be used together with digestive functors and the
+Heist templating library.
 
-This does not quite work yet, but the goal is to make it work. :)
+The code is published simply because I could not find such a program or
+example and it took me quite some time to put the things together like
+demonstrated here. So I hope this can contribute to a better documentation and
+eliminate some barriers for newbies to the snap framework (like me).
 
-There are still some things to improve:
+For learning purposes the code is available in two different versions, a
+standalone version which contains the whole code in just one file. This file
+can simply be run by "runhaskell standalone". The other version contains code
+in a structured version as it is more likely to be found in other projects.
+This code can be found under the "src/" directory. A cabal file has been added
+which should make it possible the initialize the project with "cabal install"
+and then run it with "digestive-functors-auth-example".
+
+For prototyping purposes the twitter bootstrap toolkit has been used to design
+the templates, but this is just a bit "optic sugar" and is not necessary for
+running the application. So the use of the "resources" directory is more or
+less optional.
+
+This project is still a first version and offers a lot of space for
+improvements. So feel free to fork and modify the code as you think it can
+work best or just write suggestions to me via Hannes_E@gmx.de (I also am
+hanging around in #snapframework sometimes.)
+
+
+TODO:
   - the little library Util/Form.hs is not a standalone library, but depends
     on the Application, there might be a better place for the showForm
     function
   - the authentication backend "users.json" is hardcoded in two different
     locations, this breaks the DRY principle
+  - add development mode, as in the default snap init project
