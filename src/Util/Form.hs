@@ -37,7 +37,7 @@ showForm :: String -> View Text -> AppHandler ()
 showForm prefix form =
     heistLocal (bindDigestiveSplices form) $ render template
   where
-    template = BS8.pack $ prefix ++ "-form"
+    template = BS8.pack $ "forms/" ++ prefix ++ "-form"
 
 
 ------------------------------------------------------------------------------
