@@ -7,6 +7,11 @@
 -- standalone version where all code is kept in one file. This one is the
 -- standalone version.
 --
+-- The imports may look a bit funny here, but when somebody uses Snap the
+-- first time it may not be so easy to assign external functions to the
+-- corresponding library (path), so explicit imports are used here to make it
+-- easier to find the right documentation of a function or library.
+--
 module Main where
 
 ------------------------------------------------------------------------------
@@ -83,7 +88,6 @@ type AppHandler = Handler App App
 -- (see main function) are used the call of isLoggedIn might be redundant
 -- here, but it does illustrate how the auth monad can be accessed from the
 -- handler monad as well.
---
 homeHandler :: AppHandler ()
 homeHandler = ifTop $ do
     loginStatus <- with auth isLoggedIn
@@ -99,13 +103,13 @@ homeHandler = ifTop $ do
 loginHandler :: AppHandler ()
 loginHandler = do
     (form, loginData) <- runForm "form" loginForm
-    maybe (showForm "login" form) loginUser loginData
+    maybe (showForm "login" form) loginUserHandler loginData
 
 
 ------------------------------------------------------------------------------
 -- | Handler that is called after successful login.
-loginUser :: LoginData -> AppHandler ()
-loginUser loginData = do
+loginUserHandler :: LoginData -> AppHandler ()
+loginUserHandler loginData = do
     with auth . loginByUsername username password $ loginRemember loginData
     homeHandler
   where

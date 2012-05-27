@@ -1,36 +1,63 @@
+another snap example application
+================================
+
 A web application based on the Snap framework to demonstrate basic
-authentication functionality. This simple example shows how the
-Snap.Snaplet.Auth library can be used together with digestive functors and the
-Heist templating library.
+authentication functionality. This example shows the following technologies
+working together:
 
-The code is published simply because I could not find such a program or
-example and it took me quite some time to put the things together like
-demonstrated here. So I hope this can contribute to a better documentation and
-eliminate some barriers for newbies to the snap framework (like me).
+* [snap framework](http://hackage.haskell.org/package/snap)
+* [heist templating system](http://hackage.haskell.org/package/heist)
+* [snap authentication library](http://hackage.haskell.org/packages/archive/snap/0.8.1/doc/html/Snap-Snaplet-Auth.html)
+* [composition of libraries via snaplets](http://hackage.haskell.org/packages/archive/snap/0.8.1/doc/html/Snap-Snaplet.html)
+* [digestive functors form library](http://hackage.haskell.org/package/digestive-functors)
+* [twitter's bootstrap toolkit](http://twitter.github.com/bootstrap/)
 
-For learning purposes the code is available in two different versions, a
-standalone version which contains the whole code in just one file. This file
-can simply be run by "runhaskell standalone". The other version contains code
-in a structured version as it is more likely to be found in other projects.
-This code can be found under the "src/" directory. A cabal file has been added
-which should make it possible the initialize the project with "cabal install"
-and then run it with "digestive-functors-auth-example".
+The code has been separated into several modules how this can be found in
+(more or less) conventional snap programs. Additionally all the code of those
+files has also been integrated into a single file that can be run standalone.
+This should make it easier to understand the code without jumping from one
+module (file) to another.
+
+A CSS prototyping toolkit is used here to add a bit of "optic sugar" but this
+is not required by the program to work correctly. Thus a minimal version would
+be the standalone.hs file plus the snaplet folder which contains the necessary
+heist templates.
 
 For prototyping purposes the twitter bootstrap toolkit has been used to design
 the templates, but this is just a bit "optic sugar" and is not necessary for
 running the application. So the use of the "resources" directory is more or
 less optional.
 
-This project is still a first version and offers a lot of potential for
+Note that this project is still a first version and offers a lot of potential for
 improvements. So feel free to fork and modify the code as you think it can
-work best or just write suggestions to me via Hannes_E@gmx.de (I also am
+work best or just write suggestions to me via Hannes_E@gmx.de (I am also am
 hanging around in #snapframework sometimes.)
 
+More information as well as a general introduction can be found here
+[http://snapframework.com](http://snapframework.com). Happy coding!
 
-TODO:
-  - the little library Util/Form.hs is not a standalone library, but depends
-    on the Application, there might be a better place for the showForm
-    function
-  - the authentication backend "users.json" is hardcoded in two different
-    locations, this breaks the DRY principle
-  - add development mode, as in the default snap init project
+
+installation (optional)
+-----------------------
+
+    cabal install
+
+run
+---
+
+    runhaskell standalone
+
+or (after install)
+
+    digestive-functors-snap-auth-example
+
+todo
+----
+
+* store the firstname and the lastname of the registration
+* let users choose a password
+* add email functionality (see housetab project)
+* replace the json storage backend with hdbc or redis store
+* make the Util.Form library independent from the application
+* add development mode like in a default initialized snap application
+* create a full working web application based on this example ;)
