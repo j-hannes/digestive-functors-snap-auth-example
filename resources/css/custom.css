@@ -7,4 +7,4 @@ form .btn {margin-top: 15px;}
 #login-form > *, #registration-form > * {margin-left: 18px;}
 #login-form hr {margin-top: 10px; margin-right: 20px;}
 
-#login-form, #registration-form {min-width: 255px;}
+#login-form, #registration-form {width: 255px; margin: auto;}
