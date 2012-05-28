@@ -47,8 +47,8 @@ loginForm =
 validLogin :: LoginData -> AppHandler Bool
 validLogin loginData = do
     authMgr  <- liftIO $ mkJsonAuthMgr "users.json"
-    authUser <- liftIO $ lookupByLogin authMgr $ loginUsername loginData
+    authUser <- liftIO . lookupByLogin authMgr $ loginUsername loginData
     return $ maybe False authenticate authUser
   where
     authenticate = isNothing . flip authenticatePassword password
-    password = ClearText $ T.encodeUtf8 $ loginPassword loginData
+    password = ClearText . T.encodeUtf8 $ loginPassword loginData

@@ -40,7 +40,7 @@ loginUserHandler loginData = do
     homeHandler
   where
     username = T.encodeUtf8 $ loginUsername loginData
-    password = ClearText    . T.encodeUtf8 $ loginPassword loginData
+    password = ClearText . T.encodeUtf8 $ loginPassword loginData
 
 
 ------------------------------------------------------------------------------
