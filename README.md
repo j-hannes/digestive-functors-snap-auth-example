@@ -25,7 +25,7 @@ heist templates.
 
 Note that this project is still a first version and offers a lot of potential for
 improvements. So feel free to fork and modify the code as you think it can
-work best or just write suggestions to me via Hannes_E@gmx.de (or to hannes_
+work best or just write suggestions to me via Hannes\_E@gmx.de (or to hannes\_
 at #snapframework.)
 
 More information as well as a general introduction can be found here
