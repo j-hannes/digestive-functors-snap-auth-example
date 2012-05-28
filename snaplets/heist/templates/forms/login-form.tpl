@@ -21,10 +21,10 @@
 
     <dfInputSubmit class="btn btn-primary" value="Login" />
 
-    <p style="text-align: center">
-      <a href="/register/">or create a new account</a>
-    </p>
-
   </dfForm>
+
+  <p style="text-align: center">
+    <a href="/register/">or create a new account</a>
+  </p>
 
 </apply>
