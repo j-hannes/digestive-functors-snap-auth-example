@@ -1,7 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 ------------------------------------------------------------------------------
--- | This is an example showing how to use the snap auth snaplet together with
+-- | This module contains a handler for displaying and processing a
+-- registration form.
+--
 module Handler.Register
     ( registrationHandler
     ) where
