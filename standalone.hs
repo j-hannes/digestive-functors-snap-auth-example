@@ -32,7 +32,7 @@ import           Data.Text.Encoding as T
 import           System.IO (hPutStrLn, stderr)
 import           System.Random (newStdGen, randomRs)
 
-import           Snap (liftIO)
+import           Snap (liftIO, get)
 import           Snap.Core (ifTop)
 import           Snap.Http.Server (defaultConfig, httpServe)
 import           Snap.Snaplet (Handler, Snaplet, SnapletInit, addRoutes,
@@ -173,7 +173,7 @@ loginForm =
 -- | Validates the username password combination.
 validLogin :: LoginData -> AppHandler Bool
 validLogin loginData = do
-    authMgr  <- liftIO $ mkJsonAuthMgr "users.json"
+    authMgr  <- with auth get
     authUser <- liftIO $ lookupByLogin authMgr $ loginUsername loginData
     return $ maybe False authenticate authUser
   where
