@@ -16,7 +16,6 @@ import           Data.Maybe
 
 import           Snap
 import           Snap.Snaplet.Auth
-import           Snap.Snaplet.Auth.Backends.JsonFile
 import           Text.Digestive.Form
 
 import           Application
@@ -46,7 +45,7 @@ loginForm =
 -- | Validates the username password combination.
 validLogin :: LoginData -> AppHandler Bool
 validLogin loginData = do
-    authMgr  <- liftIO $ mkJsonAuthMgr "users.json"
+    authMgr <- with auth get
     authUser <- liftIO . lookupByLogin authMgr $ loginUsername loginData
     return $ maybe False authenticate authUser
   where
