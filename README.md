@@ -8,6 +8,7 @@ working together:
 * [snap framework](http://hackage.haskell.org/package/snap)
 * [heist templating system](http://hackage.haskell.org/package/heist)
 * [snap authentication library](http://hackage.haskell.org/packages/archive/snap/0.8.1/doc/html/Snap-Snaplet-Auth.html)
+* [hdbc database connector library](http://hackage.haskell.org/package/HDBC)
 * [composition of libraries via snaplets](http://hackage.haskell.org/packages/archive/snap/0.8.1/doc/html/Snap-Snaplet.html)
 * [digestive functors form library](http://hackage.haskell.org/package/digestive-functors)
 * [twitter's bootstrap toolkit](http://twitter.github.com/bootstrap/)
@@ -52,7 +53,7 @@ todo
 * store the firstname and the lastname of the registration
 * let users choose a password
 * add email functionality (see housetab project)
-* replace the json storage backend with hdbc or redis store
+* ~~replace the json storage backend with hdbc or redis store~~
 * make the Util.Form library independent from the application
 * add development mode like in a default initialized snap application
 * create a full working web application based on this example ;)
