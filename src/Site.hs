@@ -8,10 +8,12 @@ module Site
 
 import           Data.ByteString
 
+import           Database.HDBC.Sqlite3
 import           Snap.Snaplet
 import           Snap.Snaplet.Auth
-import           Snap.Snaplet.Heist
 import           Snap.Snaplet.Auth.Backends.JsonFile
+import           Snap.Snaplet.Hdbc
+import           Snap.Snaplet.Heist
 import           Snap.Snaplet.Session.Backends.CookieSession
 import           Snap.Util.FileServe
 
@@ -47,6 +49,7 @@ app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
          "sess" (Just 3600)
     a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings
          sess "users.json"
+    d <- nestSnaplet "hdbc" db . hdbcInit $ connectSqlite3 "example.db"
     addRoutes routes
     addAuthSplices auth
-    return $ App h s a
+    return $ App h s a d

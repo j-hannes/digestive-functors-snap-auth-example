@@ -32,6 +32,7 @@ import           Data.Text.Encoding as T
 import           System.IO (hPutStrLn, stderr)
 import           System.Random (newStdGen, randomRs)
 
+import           Database.HDBC.Sqlite3 (Connection, connectSqlite3)
 import           Snap (liftIO, get)
 import           Snap.Core (ifTop)
 import           Snap.Http.Server (defaultConfig, httpServe)
@@ -43,8 +44,11 @@ import           Snap.Snaplet.Auth (AuthManager, Password(..), addAuthSplices,
                                     defAuthSettings, isLoggedIn, logout,
                                     loginByUsername, lookupByLogin,
                                     usernameExists)
+--import           Snap.Snaplet.Auth.Backends.Hdbc (initHdbcAuthManager,
+                                                  --defQueries)
 import           Snap.Snaplet.Auth.Backends.JsonFile (initJsonFileAuthManager,
                                                       mkJsonAuthMgr)
+import           Snap.Snaplet.Hdbc (HdbcSnaplet, hdbcInit)
 import           Snap.Snaplet.Heist (HasHeist, Heist, heistInit, heistLens,
                                      heistLocal, render)
 import           Snap.Snaplet.Session (SessionManager)
@@ -73,6 +77,7 @@ data App = App
     { _heist   :: Snaplet (Heist App)
     , _sess    :: Snaplet SessionManager
     , _auth    :: Snaplet (AuthManager App)
+    , _db      :: Snaplet (HdbcSnaplet Connection IO)
     }
 
 makeLens ''App
@@ -268,6 +273,7 @@ app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
          "sess" (Just 3600)
     a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings
          sess "users.json"
+    d <- nestSnaplet "hdbc" db . hdbcInit $ connectSqlite3 "example.db"
     addRoutes [
         ("/",         homeHandler)
       , ("/login",    loginHandler)
@@ -276,7 +282,7 @@ app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
       , ("",          serveDirectory "resources")
       ]
     addAuthSplices auth
-    return $ App h s a
+    return $ App h s a d
 
 
 ------------------------------------------------------------------------------

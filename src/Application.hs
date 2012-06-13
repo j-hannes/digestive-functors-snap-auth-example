@@ -6,17 +6,20 @@
 -- wide.
 -- 
 module Application
-    ( App(..)
+    ( App(App)
     , heist
     , sess
     , auth
+    , db
     , AppHandler
     ) where
 
 import           Data.Lens.Template
 
+import           Database.HDBC.Sqlite3
 import           Snap.Snaplet
 import           Snap.Snaplet.Auth
+import           Snap.Snaplet.Hdbc
 import           Snap.Snaplet.Heist
 import           Snap.Snaplet.Session
 import           Snap.Util.FileServe
@@ -30,6 +33,7 @@ data App = App
     { _heist   :: Snaplet (Heist App)
     , _sess    :: Snaplet SessionManager
     , _auth    :: Snaplet (AuthManager App)
+    , _db      :: Snaplet (HdbcSnaplet Connection IO)
     }
 
 makeLens ''App
