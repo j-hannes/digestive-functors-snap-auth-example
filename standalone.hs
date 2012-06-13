@@ -39,11 +39,11 @@ import           Snap.Http.Server (defaultConfig, httpServe)
 import           Snap.Snaplet (Handler, Snaplet, SnapletInit, addRoutes,
                                makeSnaplet, runSnaplet, nestSnaplet,
                                subSnaplet, with)
-import           Snap.Snaplet.Auth (AuthManager, Password(..), addAuthSplices,
-                                    authenticatePassword, createUser,
-                                    defAuthSettings, isLoggedIn, logout,
-                                    loginByUsername, lookupByLogin,
-                                    usernameExists)
+import           Snap.Snaplet.Auth (AuthManager, Password(..), Role(..),
+                                    addAuthSplices, authenticatePassword,
+                                    createUser, defAuthSettings, isLoggedIn,
+                                    logout, loginByUsername, lookupByLogin,
+                                    saveUser, usernameExists, userRoles)
 import           Snap.Snaplet.Auth.Backends.Hdbc (initHdbcAuthManager,
                                                   defAuthTable, defQueries)
 import           Snap.Snaplet.Auth.Backends.JsonFile (initJsonFileAuthManager,
@@ -146,7 +146,8 @@ registrationHandler = do
 createNewUser :: RegistrationData -> AppHandler ()
 createNewUser regData = do
     password <- liftIO createRandomPassword
-    with auth $ createUser (regUsername regData) password
+    user <- with auth $ createUser (regUsername regData) password
+    with auth . saveUser $ user { userRoles = [Role "Subscriber"] }
     heistLocal (bindStrings $ messages password) $ render "registration-done"
   where
     messages password = [
@@ -282,7 +283,7 @@ app :: SnapletInit App App
 app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
     h <- nestSnaplet "heist" heist $ heistInit "templates"
     s <- nestSnaplet "sess" sess sessionInit
-    a <- nestSnaplet "auth" auth hdbcAuthInit
+    a <- nestSnaplet "auth" auth jsonAuthInit
     d <- nestSnaplet "hdbc" db $ hdbcInit sqli
     addRoutes routes
     addAuthSplices auth
