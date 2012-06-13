@@ -282,7 +282,7 @@ app :: SnapletInit App App
 app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
     h <- nestSnaplet "heist" heist $ heistInit "templates"
     s <- nestSnaplet "sess" sess sessionInit
-    a <- nestSnaplet "auth" auth jsonAuthInit
+    a <- nestSnaplet "auth" auth hdbcAuthInit
     d <- nestSnaplet "hdbc" db $ hdbcInit sqli
     addRoutes routes
     addAuthSplices auth
