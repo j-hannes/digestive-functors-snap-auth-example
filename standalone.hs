@@ -44,8 +44,8 @@ import           Snap.Snaplet.Auth (AuthManager, Password(..), addAuthSplices,
                                     defAuthSettings, isLoggedIn, logout,
                                     loginByUsername, lookupByLogin,
                                     usernameExists)
---import           Snap.Snaplet.Auth.Backends.Hdbc (initHdbcAuthManager,
-                                                  --defQueries)
+import           Snap.Snaplet.Auth.Backends.Hdbc (initHdbcAuthManager,
+                                                  defAuthTable, defQueries)
 import           Snap.Snaplet.Auth.Backends.JsonFile (initJsonFileAuthManager,
                                                       mkJsonAuthMgr)
 import           Snap.Snaplet.Hdbc (HdbcSnaplet, hdbcInit)
@@ -283,13 +283,16 @@ app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
     h <- nestSnaplet "heist" heist $ heistInit "templates"
     s <- nestSnaplet "sess" sess sessionInit
     a <- nestSnaplet "auth" auth jsonAuthInit
-    d <- nestSnaplet "hdbc" db . hdbcInit $ connectSqlite3 "example.db"
+    d <- nestSnaplet "hdbc" db $ hdbcInit sqli
     addRoutes routes
     addAuthSplices auth
     return $ App h s a d
   where
     jsonAuthInit = initJsonFileAuthManager defAuthSettings sess "users.json"
+    hdbcAuthInit = initHdbcAuthManager defAuthSettings sess sqli defAuthTable
+                                       defQueries
     sessionInit  = initCookieSessionManager "site_key.txt" "sess" (Just 3600)
+    sqli         = connectSqlite3 "example.db"
 
 
 ------------------------------------------------------------------------------
