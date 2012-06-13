@@ -255,6 +255,18 @@ usernameInUseMsg  = "username already in use"
 invalidLoginMsg   = "wrong username/password combination"
 
 
+-----------------------------------------------------------------------------
+-- | Application url routes that are directed to specific handlers.
+routes :: [(ByteString, AppHandler ())]
+routes =
+    [ ("/",         homeHandler)
+    , ("/login",    loginHandler)
+    , ("/logout",   logoutHandler)
+    , ("/register", registrationHandler)
+    , ("",          serveDirectory "resources")
+    ]
+
+
 ------------------------------------------------------------------------------
 -- | Application snaplet that nests subsnaplets like heist, sess, auth or
 -- more, initializes the routes and returns the application record to be
@@ -269,20 +281,15 @@ invalidLoginMsg   = "wrong username/password combination"
 app :: SnapletInit App App
 app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
     h <- nestSnaplet "heist" heist $ heistInit "templates"
-    s <- nestSnaplet "sess" sess $ initCookieSessionManager "site_key.txt"
-         "sess" (Just 3600)
-    a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings
-         sess "users.json"
+    s <- nestSnaplet "sess" sess sessionInit
+    a <- nestSnaplet "auth" auth jsonAuthInit
     d <- nestSnaplet "hdbc" db . hdbcInit $ connectSqlite3 "example.db"
-    addRoutes [
-        ("/",         homeHandler)
-      , ("/login",    loginHandler)
-      , ("/logout",   logoutHandler)
-      , ("/register", registrationHandler)
-      , ("",          serveDirectory "resources")
-      ]
+    addRoutes routes
     addAuthSplices auth
     return $ App h s a d
+  where
+    jsonAuthInit = initJsonFileAuthManager defAuthSettings sess "users.json"
+    sessionInit  = initCookieSessionManager "site_key.txt" "sess" (Just 3600)
 
 
 ------------------------------------------------------------------------------

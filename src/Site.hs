@@ -45,11 +45,12 @@ routes = [
 app :: SnapletInit App App
 app = makeSnaplet "app" "digestive-functors example application" Nothing $ do
     h <- nestSnaplet "heist" heist $ heistInit "templates"
-    s <- nestSnaplet "sess" sess $ initCookieSessionManager "site_key.txt"
-         "sess" (Just 3600)
-    a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings
-         sess "users.json"
+    s <- nestSnaplet "sess" sess sessionInit
+    a <- nestSnaplet "auth" auth jsonAuthInit
     d <- nestSnaplet "hdbc" db . hdbcInit $ connectSqlite3 "example.db"
     addRoutes routes
     addAuthSplices auth
     return $ App h s a d
+  where
+    jsonAuthInit = initJsonFileAuthManager defAuthSettings sess "users.json"
+    sessionInit  = initCookieSessionManager "site_key.txt" "sess" (Just 3600)
