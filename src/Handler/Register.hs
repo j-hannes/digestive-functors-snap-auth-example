@@ -9,14 +9,11 @@ module Handler.Register
     ) where
 
 
-import           Control.Monad
 import qualified Data.Text.Encoding as T
 
 import           Snap
 import           Snap.Snaplet.Auth
 import           Snap.Snaplet.Heist
-import           Text.Digestive.Heist
-import           Text.Digestive.Form
 import           Text.Digestive.Snap
 import           Text.Templating.Heist
 
@@ -39,7 +36,9 @@ registrationHandler = do
 createNewUser :: RegistrationData -> AppHandler ()
 createNewUser regData = do
     password <- liftIO createRandomPassword
-    with auth $ createUser (regUsername regData) password
+    --with auth $ createUser (regUsername regData) password
+    user <- with auth $ createUser (regUsername regData) password
+    with auth . saveUser $ user { userRoles = [Role "Subscriber"] }
     heistLocal (bindStrings $ messages password) $ render "registration-done"
   where
     messages password = [
